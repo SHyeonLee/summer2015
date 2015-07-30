@@ -1,0 +1,43 @@
+﻿빌드 시작: 2015-07-30 오전 12:15:32
+     1>2 노드의 "c:\Summer2015\OpenBitmap\OpenBitmap.vcxproj" 프로젝트(build 대상)입니다.
+     1>InitializeBuildStatus:
+         "Debug\OpenBitmap.unsuccessfulbuild"에 연결(touching)하고 있습니다.
+       ClCompile:
+         모든 출력이 최신 상태입니다.
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _WINDOWS /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\OpenBitmap.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ChildView.cpp MainFrm.cpp OpenBitmap.cpp
+         ChildView.cpp
+     1>c:\summer2015\openbitmap\childview.cpp(137): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+     1>c:\summer2015\openbitmap\childview.cpp(148): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+     1>c:\summer2015\openbitmap\childview.cpp(159): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+     1>c:\summer2015\openbitmap\childview.cpp(170): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+     1>c:\summer2015\openbitmap\childview.cpp(181): warning C4018: '<' : signed 또는 unsigned가 일치하지 않습니다.
+         코드를 생성하고 있습니다...
+         컴파일하고 있습니다...
+         OpenBitmap.cpp
+         MainFrm.cpp
+         코드를 생성하고 있습니다...
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _DEBUG /D _UNICODE /D UNICODE /D _AFXDLL /l"0x0409" /IDebug\ /nologo /fo"Debug\OpenBitmap.res" OpenBitmap.rc 
+       ManifestResourceCompile:
+         모든 출력이 최신 상태입니다.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"c:\Summer2015\OpenBitmap\Debug\OpenBitmap.exe" /INCREMENTAL /NOLOGO /MANIFEST /ManifestFile:"Debug\OpenBitmap.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"c:\Summer2015\OpenBitmap\Debug\OpenBitmap.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"wWinMainCRTStartup" /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\Summer2015\OpenBitmap\Debug\OpenBitmap.lib" /MACHINE:X86 Debug\OpenBitmap.res
+         Debug\OpenBitmap.exe.embed.manifest.res
+         Debug\ChildView.obj
+         Debug\MainFrm.obj
+         Debug\OpenBitmap.obj
+         Debug\stdafx.obj
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\OpenBitmap.exe.embed.manifest" /manifest Debug\OpenBitmap.exe.intermediate.manifest "C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\Include\Manifest\dpiaware.manifest"
+         모든 출력이 최신 상태입니다.
+       LinkEmbedManifest:
+         모든 출력이 최신 상태입니다.
+         OpenBitmap.vcxproj -> c:\Summer2015\OpenBitmap\Debug\OpenBitmap.exe
+       FinalizeBuildStatus:
+         "Debug\OpenBitmap.unsuccessfulbuild" 파일을 삭제하고 있습니다.
+         "Debug\OpenBitmap.lastbuildstate"에 연결(touching)하고 있습니다.
+     1>"c:\Summer2015\OpenBitmap\OpenBitmap.vcxproj" 프로젝트를 빌드했습니다(build 대상).
+
+빌드했습니다.
+
+경과 시간: 00:00:01.78
