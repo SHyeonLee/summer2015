@@ -10,13 +10,14 @@
 
 class CChildView : public CWnd
 {
-// Construction
+	// Construction
 public:
 	CChildView();
 
-// Attributes
+	// Attributes
 public:
 	unsigned char *pDib;
+	unsigned char *tDib;
 	BITMAPINFO *bitmapInfo;
 	unsigned char samplePerPixel;
 	unsigned int imageWidth;
@@ -27,14 +28,14 @@ public:
 
 	int GetRealWidth(int);
 	unsigned char Clip(int, int , int);
-// Operations
+	// Operations
 public:
 
-// Overrides
-	protected:
+	// Overrides
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CChildView();
 
@@ -50,6 +51,6 @@ public:
 	afx_msg void OnArithmeticMultiply();
 	afx_msg void OnArithmeticDivide();
 	afx_msg void OnArithmeticNegative();
-	afx_msg void OnArithmeticClip();
+	afx_msg void OnArithmeticPic();
 };
 

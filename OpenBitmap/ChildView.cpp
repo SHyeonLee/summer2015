@@ -17,12 +17,17 @@ CChildView::CChildView()
 {
 	pDib = NULL;
 	dstData = NULL;
+	tDib = NULL;
 }
 
 CChildView::~CChildView()
 {
 	if(pDib)
 		delete pDib;
+
+	if(tDib)
+		delete tDib;
+
 
 	if(dstData)
 		delete dstData;
@@ -38,7 +43,7 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_ARITHMETIC_MULTIPLY, &CChildView::OnArithmeticMultiply)
 	ON_COMMAND(ID_ARITHMETIC_DIVIDE, &CChildView::OnArithmeticDivide)
 	ON_COMMAND(ID_ARITHMETIC_NEGATIVE, &CChildView::OnArithmeticNegative)
-	ON_COMMAND(ID_ARITHMETIC_CLIP, &CChildView::OnArithmeticClip)
+	ON_COMMAND(ID_ARITHMETIC_PIC, &CChildView::OnArithmeticPic)
 END_MESSAGE_MAP()
 
 
@@ -185,9 +190,49 @@ void CChildView::OnArithmeticNegative()
 	Invalidate(FALSE);
 }
 
-void CChildView::OnArithmeticClip()
+void CChildView::OnArithmeticPic()
 {
+	unsigned char *tempData;
+	BITMAPINFO *tempInfo;
 
+	CString szFilter = _T ("bitmap Files (*.bmp)|*.bmp|All Files (*.*)|*.*|");
+
+	CFileDialog dlg (TRUE, NULL, NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT |
+		OFN_ALLOWMULTISELECT, szFilter, this);
+	if(dlg.DoModal () == IDCANCEL)
+		return;
+
+	FILE *file;
+	_wfopen_s(&file, dlg.GetPathName(), L"rb");
+
+	BITMAPFILEHEADER bitmapFileHeader;
+	fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, file);
+
+	int dibSize = bitmapFileHeader.bfSize-sizeof(BITMAPFILEHEADER);
+
+	if(tDib)
+		delete[] tDib;
+
+	tDib = new unsigned char[dibSize];
+
+	fread(tDib, dibSize, 1, file);
+
+
+	tempInfo = (BITMAPINFO *) tDib;
+
+	tempData =  tDib + sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * tempInfo->bmiHeader.biClrUsed;
+
+	if(pDib==NULL)
+		return;
+
+	for(int i=0; i<imageWidth*imageHeight; i++)
+	{
+		dstData[i] = Clip(srcData[i]+tempData[i],0,255);
+	}
+
+	fclose(file);
+
+	Invalidate(FALSE);
 }
 
 int CChildView::GetRealWidth(int width)
