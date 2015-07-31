@@ -71,8 +71,8 @@ void CChildView::OnPaint()
 		return;
 
 	SetDIBitsToDevice(dc.m_hDC,
-		0,0,bitmapInfo->bmiHeader.biWidth,bitmapInfo->bmiHeader.biHeight,
-		0,0,0,bitmapInfo->bmiHeader.biHeight,
+		0,0,imageStep,imageHeight,
+		0,0,0,imageHeight,
 		dstData,bitmapInfo,DIB_RGB_COLORS);
 
 	// Do not call CWnd::OnPaint() for painting messages
@@ -216,8 +216,7 @@ void CChildView::OnArithmeticPic()
 	tDib = new unsigned char[dibSize];
 
 	fread(tDib, dibSize, 1, file);
-
-
+	
 	tempInfo = (BITMAPINFO *) tDib;
 
 	tempData =  tDib + sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * tempInfo->bmiHeader.biClrUsed;
