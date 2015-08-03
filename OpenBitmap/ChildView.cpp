@@ -44,6 +44,10 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_ARITHMETIC_DIVIDE, &CChildView::OnArithmeticDivide)
 	ON_COMMAND(ID_ARITHMETIC_NEGATIVE, &CChildView::OnArithmeticNegative)
 	ON_COMMAND(ID_ARITHMETIC_PIC, &CChildView::OnArithmeticPic)
+	ON_COMMAND(ID_GEOMETRY_FLIPV, &CChildView::OnGeometryFlipV)
+	ON_COMMAND(ID_GEOMETRY_FLIPH, &CChildView::OnGeometryFlipH)
+	ON_COMMAND(ID_GEOMETRY_ROTATEL, &CChildView::OnGeometryRotateL)
+	ON_COMMAND(ID_GEOMETRY_ROTATER, &CChildView::OnGeometryRotateR)
 END_MESSAGE_MAP()
 
 
@@ -256,4 +260,30 @@ unsigned char CChildView::Clip(int value, int low, int high)
 		return value = (unsigned char)high;
 	else
 		return (unsigned char)value;
+}
+
+void CChildView::OnGeometryFlipH()
+{
+	if(pDib==NULL)
+		return;
+	for(int i=0; i<imageWidth*imageHeight; i++)
+	{
+		dstData[i] = Clip(srcData[i]/2, 0, 255);
+	}
+	Invalidate(FALSE);
+}
+
+void CChildView::OnGeometryFlipV()
+{
+
+}
+
+void CChildView::OnGeometryRotateL()
+{
+
+}
+
+void CChildView::OnGeometryRotateR()
+{
+
 }

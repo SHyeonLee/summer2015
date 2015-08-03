@@ -52,5 +52,9 @@ public:
 	afx_msg void OnArithmeticDivide();
 	afx_msg void OnArithmeticNegative();
 	afx_msg void OnArithmeticPic();
+	afx_msg void OnGeometryFlipV();
+	afx_msg void OnGeometryFlipH();
+	afx_msg void OnGeometryRotateL();
+	afx_msg void OnGeometryRotateR();
 };
 
