@@ -44,8 +44,8 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_ARITHMETIC_DIVIDE, &CChildView::OnArithmeticDivide)
 	ON_COMMAND(ID_ARITHMETIC_NEGATIVE, &CChildView::OnArithmeticNegative)
 	ON_COMMAND(ID_ARITHMETIC_PIC, &CChildView::OnArithmeticPic)
-	ON_COMMAND(ID_GEOMETRY_FLIPV, &CChildView::OnGeometryFlipV)
 	ON_COMMAND(ID_GEOMETRY_FLIPH, &CChildView::OnGeometryFlipH)
+	ON_COMMAND(ID_GEOMETRY_FLIPV, &CChildView::OnGeometryFlipV)
 	ON_COMMAND(ID_GEOMETRY_ROTATEL, &CChildView::OnGeometryRotateL)
 	ON_COMMAND(ID_GEOMETRY_ROTATER, &CChildView::OnGeometryRotateR)
 END_MESSAGE_MAP()
@@ -75,8 +75,8 @@ void CChildView::OnPaint()
 		return;
 
 	SetDIBitsToDevice(dc.m_hDC,
-		0,0,imageStep,imageHeight,
-		0,0,0,imageHeight,
+		0,0,Step,Height,
+		0,0,0,Height,
 		dstData,bitmapInfo,DIB_RGB_COLORS);
 
 	// Do not call CWnd::OnPaint() for painting messages
@@ -117,19 +117,19 @@ void CChildView::OnFileOpen()
 	//Important Variables
 	bitmapInfo = (BITMAPINFO *) pDib;
 	samplePerPixel = bitmapInfo->bmiHeader.biBitCount/8;
-	imageWidth = bitmapInfo->bmiHeader.biWidth;
-	imageHeight = bitmapInfo->bmiHeader.biHeight;
-	imageStep = GetRealWidth(imageWidth);
+	Width = bitmapInfo->bmiHeader.biWidth;
+	Height = bitmapInfo->bmiHeader.biHeight;
+	Step = GetRealWidth(Width);
 	srcData =  pDib + sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * bitmapInfo->bmiHeader.biClrUsed;
 
 	//Allocate destination memory
 	if(dstData)
 		delete[] dstData;
 
-	dstData = new unsigned char[imageStep*imageHeight];
+	dstData = new unsigned char[Step*Height];
 
 	//compy src to dst
-	memcpy(dstData, srcData, imageStep*imageHeight);
+	memcpy(dstData, srcData, Step*Height);
 
 	//close file
 	fclose(file);
@@ -143,7 +143,7 @@ void CChildView::OnArithmeticAdd()
 	if(pDib == NULL)
 		return;
 
-	for(int i=0; i<imageWidth*imageHeight; i++)
+	for(int i=0; i<Width*Height; i++)
 	{
 		dstData[i] = Clip(srcData[i] + 100, 0, 255);
 	}
@@ -154,7 +154,7 @@ void CChildView::OnArithmeticSub()
 {
 	if(pDib==NULL)
 		return;
-	for(int i=0; i<imageWidth*imageHeight; i++)
+	for(int i=0; i<Width*Height; i++)
 	{
 		dstData[i] = Clip(srcData[i] - 100, 0, 255);
 	}
@@ -165,7 +165,7 @@ void CChildView::OnArithmeticMultiply()
 {
 	if(pDib==NULL)
 		return;
-	for(int i=0; i<imageWidth*imageHeight; i++)
+	for(int i=0; i<Width*Height; i++)
 	{
 		dstData[i] = Clip(srcData[i]*2, 0, 255);
 	}
@@ -176,7 +176,7 @@ void CChildView::OnArithmeticDivide()
 {
 	if(pDib==NULL)
 		return;
-	for(int i=0; i<imageWidth*imageHeight; i++)
+	for(int i=0; i<Width*Height; i++)
 	{
 		dstData[i] = Clip(srcData[i]/2, 0, 255);
 	}
@@ -187,7 +187,7 @@ void CChildView::OnArithmeticNegative()
 {
 	if(pDib==NULL)
 		return;
-	for(int i=0; i<imageWidth*imageHeight; i++)
+	for(int i=0; i<Width*Height; i++)
 	{
 		dstData[i] = 255-srcData[i];
 	}
@@ -228,13 +228,67 @@ void CChildView::OnArithmeticPic()
 	if(pDib==NULL)
 		return;
 
-	for(int i=0; i<imageWidth*imageHeight; i++)
+	for(int i=0; i<Width*Height; i++)
 	{
 		dstData[i] = Clip(srcData[i]+tempData[i],0,255);
 	}
 
 	fclose(file);
 
+	Invalidate(FALSE);
+}
+
+void CChildView::OnGeometryFlipH()
+{
+	if(pDib==NULL)
+		return;
+	for(int i=0; i<Height; i++)
+	{
+		int Hlevel = i*Step;
+		for(int j=0; j<Width; j++)
+		{
+			dstData[Hlevel+j]=srcData[Hlevel+(Width-j-1)];
+		}
+	}
+	Invalidate(FALSE);
+}
+
+void CChildView::OnGeometryFlipV()
+{
+	if(pDib==NULL)
+		return;
+	for(int i=0; i<Height; i++)
+	{
+		memcpy(dstData+i*Step,srcData+(Height-i-1)*Step,Step);
+	}
+	Invalidate(FALSE);
+}
+
+void CChildView::OnGeometryRotateL()
+{
+	if(pDib==NULL)
+		return;
+	for(int i=0; i<Height; i++)
+	{
+		for(int j=0; j<Width; j++)
+		{
+			dstData[i*Step+j]=srcData[(Step-j-1)*Step+i];
+		}
+	}
+	Invalidate(FALSE);
+}
+
+void CChildView::OnGeometryRotateR()
+{
+	if(pDib==NULL)
+		return;
+	for(int i=0; i<Height; i++)
+	{
+		for(int j=0; j<Width; j++)
+		{
+			dstData[i*Step+j]=srcData[j*Step+Height-i-1];
+		}
+	}
 	Invalidate(FALSE);
 }
 
@@ -260,30 +314,4 @@ unsigned char CChildView::Clip(int value, int low, int high)
 		return value = (unsigned char)high;
 	else
 		return (unsigned char)value;
-}
-
-void CChildView::OnGeometryFlipH()
-{
-	if(pDib==NULL)
-		return;
-	for(int i=0; i<imageWidth*imageHeight; i++)
-	{
-		dstData[i] = Clip(srcData[i]/2, 0, 255);
-	}
-	Invalidate(FALSE);
-}
-
-void CChildView::OnGeometryFlipV()
-{
-
-}
-
-void CChildView::OnGeometryRotateL()
-{
-
-}
-
-void CChildView::OnGeometryRotateR()
-{
-
 }

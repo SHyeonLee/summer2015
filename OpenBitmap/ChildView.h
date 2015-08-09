@@ -20,9 +20,9 @@ public:
 	unsigned char *tDib;
 	BITMAPINFO *bitmapInfo;
 	unsigned char samplePerPixel;
-	unsigned int imageWidth;
-	unsigned int imageHeight;
-	unsigned int imageStep;
+	unsigned int Width;
+	unsigned int Height;
+	unsigned int Step;
 	unsigned char *srcData;
 	unsigned char *dstData;
 
@@ -52,8 +52,8 @@ public:
 	afx_msg void OnArithmeticDivide();
 	afx_msg void OnArithmeticNegative();
 	afx_msg void OnArithmeticPic();
-	afx_msg void OnGeometryFlipV();
 	afx_msg void OnGeometryFlipH();
+	afx_msg void OnGeometryFlipV();
 	afx_msg void OnGeometryRotateL();
 	afx_msg void OnGeometryRotateR();
 };
