@@ -29,6 +29,7 @@ public:
 	int				GetRealWidth(int);
 	unsigned char	Clip(int, int , int);
 	void			GammaCorrection(double gamma);
+	void			SpatialFilter(double *mask);
 
 	CScrollBar		scrollBar;
 
@@ -64,6 +65,8 @@ public:
 	afx_msg void OnLutAdd();
 	afx_msg void OnLutNegative();
 	afx_msg void OnLutGamma();
+	afx_msg void OnFilterBlur();
+	afx_msg void OnFilterSharpen();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 };

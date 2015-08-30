@@ -49,6 +49,8 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_GEOMETRY_FLIPV,			&CChildView::OnGeometryFlipV)
 	ON_COMMAND(ID_GEOMETRY_ROTATEL,			&CChildView::OnGeometryRotateL)
 	ON_COMMAND(ID_GEOMETRY_ROTATER,			&CChildView::OnGeometryRotateR)
+	ON_COMMAND(ID_FILTER_BLUR,				&CChildView::OnFilterBlur)
+	ON_COMMAND(ID_FILTER_SHARPEN,			&CChildView::OnFilterSharpen)
 
 	ON_UPDATE_COMMAND_UI(ID_LUT_ADD,		&CChildView::OnUpdateLutAdd)
 	ON_COMMAND(ID_LUT_ADD,					&CChildView::OnLutAdd)
@@ -427,6 +429,41 @@ void CChildView::GammaCorrection(double gamma)
 
 	for(int i=0; i < Height*Step; i++){
 		dstData[i] = lut[srcData[i]];
+	}
+	Invalidate(FALSE);
+}
+
+void CChildView::OnFilterBlur()
+{
+	double mask[9] = {1/9., 1/9., 1/9.,
+					1/9., 1/9., 1/9.,
+					1/9., 1/9., 1/9.};
+	SpatialFilter(mask);
+}
+
+void CChildView::OnFilterSharpen()
+{
+	double mask[9] = {0, -1, 0,
+					-1, 5, -1,
+					0, -1, 0};
+	SpatialFilter(mask);
+}
+
+void CChildView::SpatialFilter(double *mask)
+{
+	double sum;
+	for(int i=0; i<Width-1; i++)
+	{
+		for(int j=0; j<Height-1; j++)
+		{
+			sum = 0;
+			for(int k=0; k<3; k++)
+			{
+				for(int l=0; l<3; l++)
+					sum += srcData[(i+k-1)*Step+j+l-1]*mask[k*3+l];
+			}
+			dstData[i*Step+j]=Clip(int(sum),0,255);
+		}
 	}
 	Invalidate(FALSE);
 }
