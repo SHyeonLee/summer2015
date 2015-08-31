@@ -19,6 +19,7 @@ CChildView::CChildView()
 	pDib = NULL;
 	dstData = NULL;
 	tDib = NULL;
+	leftButtonDown = FALSE;
 }
 
 CChildView::~CChildView()
@@ -58,6 +59,9 @@ BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_COMMAND(ID_LUT_GAMMA,				&CChildView::OnLutGamma)
 	ON_WM_CREATE()
 	ON_WM_HSCROLL()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
@@ -436,16 +440,16 @@ void CChildView::GammaCorrection(double gamma)
 void CChildView::OnFilterBlur()
 {
 	double mask[9] = {1/9., 1/9., 1/9.,
-					1/9., 1/9., 1/9.,
-					1/9., 1/9., 1/9.};
+		1/9., 1/9., 1/9.,
+		1/9., 1/9., 1/9.};
 	SpatialFilter(mask);
 }
 
 void CChildView::OnFilterSharpen()
 {
 	double mask[9] = {0, -1, 0,
-					-1, 5, -1,
-					0, -1, 0};
+		-1, 5, -1,
+		0, -1, 0};
 	SpatialFilter(mask);
 }
 
@@ -466,4 +470,39 @@ void CChildView::SpatialFilter(double *mask)
 		}
 	}
 	Invalidate(FALSE);
+}
+
+void CChildView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	leftButtonDown = TRUE;
+	leftButtonPoint = point;
+
+	CWnd::OnLButtonDown(nFlags, point);
+}
+
+
+void CChildView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	leftButtonDown = FALSE;
+
+	CWnd::OnLButtonUp(nFlags, point);
+}
+
+
+void CChildView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if(leftButtonDown)
+	{
+		int diff = leftButtonPoint.y-point.y;
+
+		unsigned char lut[256];
+
+		for(int i=0; i<255; i++)
+			lut[i] = Clip(i+diff,0,255);
+		for(int i=0; i<Height*Width; i++)
+			dstData[i] = lut[srcData[i]];
+		Invalidate(FALSE);
+	}
+
+	CWnd::OnMouseMove(nFlags, point);
 }

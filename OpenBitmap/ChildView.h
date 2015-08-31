@@ -33,6 +33,9 @@ public:
 
 	CScrollBar		scrollBar;
 
+	BOOL			leftButtonDown;
+	CPoint			leftButtonPoint;
+
 	// Operations
 public:
 
@@ -69,5 +72,8 @@ public:
 	afx_msg void OnFilterSharpen();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
